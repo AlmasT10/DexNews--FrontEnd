@@ -1,60 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
-// import React from 'react';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-// import React from "react";
-// import { StyleSheet, Text, View } from "react-native";
-// import { AppLoading } from "expo-app-loading";
-// import {
-//   useFonts,
-//   Poppins_500Medium,
-//   Poppins_600Semi_Bold
-// } from "@expo-google-fonts/poppins";
-// import { StatusBar } from "expo-status-bar";
-
-// export function App() {
-//   let [fontsLoaded, error] = useFonts({
-//     Poppins_500Medium,
-//     Poppins_600SemiBold,
-//   });
-
-//   if (!fontsLoaded){
-//     return <AppLoading />;
-//   }
-// }
-
-// const LoginScreen = () => {
-
-//   return (
-//     <View>
-//       <Text style={{ fontFamily: "Poppins_500Medium", fontSize: 28, paddingTop: 50, textAlign: "center"}}>Hello</Text>
-//       <StatusBar style ="auto" />
-//     </View>
-//   );
-// };
-
-// export default LoginScreen;
-
-// const styles = StyleSheet.create({});
-
 import React from "react";
 import {
   StyleSheet,
@@ -75,34 +18,31 @@ import { useNavigation } from "@react-navigation/native";
 
 const width_proportion = "80%";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.screenContainer}>
+      <TouchableOpacity>
+        <Text style={styles.skipSignupBtn}>Skip</Text>
+      </TouchableOpacity>
       <Image
         style={styles.imageLogo}
         source={require("../assets/Logo.png")}
       ></Image>
       <View style={styles.formContainer}>
-        <Text style={styles.formTextLogin}>Login</Text>
+        <Text style={styles.formTextLogin}>Sign Up</Text>
+        <TextInput style={styles.formInput} placeholder="Full Name" />
+
         <TextInput style={styles.formInput} placeholder="Email" />
 
         <TextInput style={styles.formInput} placeholder="Password" />
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ForgotPassword");
-          }}
-        >
-          <Text style={styles.forgotButton}>Forgot Password?</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity>
+        <Text style={styles.forgotButton}>Forgot Password?</Text>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Main");
-          }}
-        >
-          <Text style={styles.loginButton}>Login</Text>
+        <TouchableOpacity>
+          <Text style={styles.loginButton}>Sign Up</Text>
         </TouchableOpacity>
 
         <Text style={styles.orText}>Or</Text>
@@ -125,12 +65,8 @@ const LoginScreen = () => {
       </View>
 
       <Text style={styles.signupBtn}>Don't have an account?</Text>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Register");
-        }}
-      >
-        <Text style={styles.signupBtnF}>Register</Text>
+      <TouchableOpacity>
+        <Text style={styles.signupBtnF}>Create Now</Text>
       </TouchableOpacity>
     </View>
   );
@@ -142,6 +78,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#E9EFFF",
   },
 
+  skipSignupBtn: {
+    color: "#222222",
+    textAlign: "right",
+    marginRight: 30,
+    // marginTop: 30,
+    position: "relative",
+    top: 50,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
   imageLogo: {
     height: 62,
     width: 86,
@@ -150,12 +97,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: 100,
+    marginTop: 70,
   },
 
   formContainer: {
     backgroundColor: "#FFFFFF",
-    height: 450,
+    height: 480,
     width: width_proportion,
     borderRadius: 30,
     marginTop: 10,
@@ -199,11 +146,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginTop: 30,
+    textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
     height: 46,
     borderRadius: 10,
-    textAlign: "center",
+    textAlignVertical: "center",
   },
 
   orText: {
@@ -220,29 +168,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "transparent",
-  },
-
-  fbaseBtnGoogle: {
-    backgroundColor: "#EC3D31",
-    color: "#FFFFFF",
-    height: 40,
-  },
-
-  signupBtn: {
-    textAlign: "center",
-    fontSize: 20,
-    color: "#333333",
-    paddingTop: 20,
-  },
-
-  signupBtnF: {
-    color: "#307AFF",
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 5,
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 
   fbaseBtnGoogle: {
@@ -312,4 +237,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
