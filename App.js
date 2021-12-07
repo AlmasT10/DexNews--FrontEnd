@@ -21,10 +21,26 @@ function MainTabs() {
 
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeFeedScreen} />
-      <Tab.Screen name="Category" component={CategorySelectionScreen} />
-      <Tab.Screen name="SavedArticles" component={SavedArticlesScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeFeedScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Category"
+        component={CategorySelectionScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="SavedArticles"
+        component={SavedArticlesScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 }
