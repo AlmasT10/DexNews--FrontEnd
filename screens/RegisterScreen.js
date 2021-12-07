@@ -22,7 +22,11 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.screenContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Main");
+        }}
+      >
         <Text style={styles.skipSignupBtn}>Skip</Text>
       </TouchableOpacity>
       <Image
@@ -41,7 +45,11 @@ const RegisterScreen = () => {
         <Text style={styles.forgotButton}>Forgot Password?</Text>
         </TouchableOpacity> */}
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Main");
+          }}
+        >
           <Text style={styles.loginButton}>Sign Up</Text>
         </TouchableOpacity>
 
@@ -64,9 +72,13 @@ const RegisterScreen = () => {
         </View>
       </View>
 
-      <Text style={styles.signupBtn}>Don't have an account?</Text>
-      <TouchableOpacity>
-        <Text style={styles.signupBtnF}>Create Now</Text>
+      <Text style={styles.signupBtn}>Already have an account?</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Login");
+        }}
+      >
+        <Text style={styles.signupBtnF}>Login</Text>
       </TouchableOpacity>
     </View>
   );
