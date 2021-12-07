@@ -12,9 +12,29 @@ import HomeFeedScreen from "./screens/HomeFeedScreen";
 import CategorySelectionScreen from "./screens/CategorySelectionScreen";
 import SavedArticlesScreen from "./screens/SavedArticlesScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import NewsDetailsScreen from "./screens/NewsDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function NewsStack() {
+  const navigation = useNavigation();
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="NewsHome"
+        component={HomeFeedScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NewsDetails"
+        component={NewsDetailsScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function MainTabs() {
   const navigation = useNavigation();
@@ -23,7 +43,7 @@ function MainTabs() {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={HomeFeedScreen}
+        component={NewsStack}
         options={{ headerShown: false }}
       />
       <Tab.Screen

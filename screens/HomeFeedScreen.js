@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
@@ -11,6 +12,7 @@ import {
 import { Image, SearchBar, ListItem, Avatar } from "react-native-elements";
 
 const HomeFeedScreen = () => {
+  const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
@@ -27,7 +29,12 @@ const HomeFeedScreen = () => {
   keyExtractor = (item, index) => index.toString();
 
   renderItem = ({ item }) => (
-    <ListItem bottomDivider>
+    <ListItem
+      bottomDivider
+      onPress={() => {
+        navigation.navigate("NewsDetails");
+      }}
+    >
       <Avatar source={item.urlToImage && { uri: item.urlToImage }} />
       <ListItem.Content>
         <ListItem.Title style={{ color: "blue" }}>{item.title}</ListItem.Title>
