@@ -29,6 +29,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import Heart from "react-animated-heart";
 const width_proportion = "80%";
+import Comment from "../components/Comment";
 
 const likeButton = () => {
   const [liked, setLiked] = useState(false);
@@ -134,6 +135,7 @@ const NewsDetailsScreen = () => {
               not be playing the best Lifeline, and Crypto’s ability often
               separates him from the squad.{"\n"} {"\n"}
             </Text>
+            <Comment />
           </ScrollView>
         </SafeAreaView>
       </View>
