@@ -47,7 +47,7 @@ const RegisterScreen = () => {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Main");
+            navigation.navigate("Preferences");
           }}
         >
           <Text style={styles.loginButton}>Sign Up</Text>

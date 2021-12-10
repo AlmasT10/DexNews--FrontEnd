@@ -9,22 +9,44 @@ import {
   Text,
   View,
 } from "react-native";
-import { Image, SearchBar, ListItem, Avatar } from "react-native-elements";
+import {
+  Image,
+  SearchBar,
+  ListItem,
+  Avatar,
+  Icon,
+} from "react-native-elements";
+import baseURL from "../assets/common/baseURL";
 
-const HomeFeedScreen = () => {
+const NewsFeedScreen = ({ route }) => {
+  const category = route.params.title;
   const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     const getArticles = async () => {
-      const res = await axios.get(
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=be209dfe2f554400a9e6e3e214fdc366"
-      );
+      const res = await axios.get(`${baseURL}news/${category}`);
       setArticles(res.data.articles);
       console.log(res);
     };
     getArticles();
   }, []);
+
+  //   useEffect(() => {
+  //     axios
+  //       .get(`${baseURL}news/${category}`)
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         setArticles(res);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+
+  //     return () => {
+  //       setArticles([]);
+  //     };
+  //   }, []);
 
   keyExtractor = (item, index) => index.toString();
 
@@ -62,9 +84,12 @@ const HomeFeedScreen = () => {
             justifyContent: "space-evenly",
           }}
         >
-          <Image
-            source={require("../assets/Logo.png")}
-            style={{ width: 60, height: 32 }}
+          <Icon
+            name="arrow-back"
+            brand="ionicons"
+            onPress={() => {
+              navigation.navigate("Category");
+            }}
           />
           <SearchBar
             round
@@ -82,12 +107,11 @@ const HomeFeedScreen = () => {
   );
 };
 
-export default HomeFeedScreen;
+export default NewsFeedScreen;
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    paddingVertical: 40,
   },
   searchCon: {
     backgroundColor: "#eee",

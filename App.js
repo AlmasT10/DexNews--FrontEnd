@@ -13,6 +13,9 @@ import CategorySelectionScreen from "./screens/CategorySelectionScreen";
 import SavedArticlesScreen from "./screens/SavedArticlesScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import NewsDetailsScreen from "./screens/NewsDetailScreen";
+import OnBoardingScreen from "./screens/OnBoardingScreen";
+import NewsFeedScreen from "./screens/NewsFeedScreen";
+import PreferenceScreen from "./screens/PreferenceScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +39,30 @@ function NewsStack() {
   );
 }
 
+function CategoryNewsStack() {
+  const navigation = useNavigation();
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Category"
+        component={CategorySelectionScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CategoryFeed"
+        component={NewsFeedScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DetailNews"
+        component={NewsDetailsScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function MainTabs() {
   const navigation = useNavigation();
 
@@ -47,8 +74,8 @@ function MainTabs() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Category"
-        component={CategorySelectionScreen}
+        name="CategoryStack"
+        component={CategoryNewsStack}
         options={{ headerShown: false }}
       />
       <Tab.Screen
@@ -69,6 +96,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/* <Stack.Screen
+          name="Onboarding"
+          component={OnBoardingScreen}
+          options={{ headerShown: false }}
+        /> */}
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -79,6 +111,12 @@ export default function App() {
           component={RegisterScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Preferences"
+          component={PreferenceScreen}
+          options={{ headerShown: false }}
+        />
+
         <Stack.Screen
           name="ForgotPassword"
           component={ForgotPasswordScreen}
