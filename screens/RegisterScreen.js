@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,11 +15,36 @@ import {
   Poppins_600Semi_Bold,
 } from "@expo-google-fonts/poppins";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-elements";
+import axios from "axios";
+import baseURL from "../assets/common/baseURL";
 
 const width_proportion = "80%";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signUp = () => {
+    let user = {
+      name: name,
+      email: email,
+      password: password,
+    };
+
+    axios
+      .post(`${baseURL}users/register`, user)
+      .then((res) => {
+        if (res.status != 400) {
+          navigation.navigate("Preferences");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.screenContainer}>
       <TouchableOpacity
@@ -35,23 +60,38 @@ const RegisterScreen = () => {
       ></Image>
       <View style={styles.formContainer}>
         <Text style={styles.formTextLogin}>Sign Up</Text>
-        <TextInput style={styles.formInput} placeholder="Full Name" />
+        <TextInput
+          style={styles.formInput}
+          placeholder="Full Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
 
-        <TextInput style={styles.formInput} placeholder="Email" />
+        <TextInput
+          style={styles.formInput}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
 
-        <TextInput style={styles.formInput} placeholder="Password" />
+        <TextInput
+          style={styles.formInput}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
 
         {/* <TouchableOpacity>
         <Text style={styles.forgotButton}>Forgot Password?</Text>
         </TouchableOpacity> */}
-
-        <TouchableOpacity
+        <Button
+          title="Sign Up"
           onPress={() => {
-            navigation.navigate("Preferences");
+            signUp();
           }}
-        >
-          <Text style={styles.loginButton}>Sign Up</Text>
-        </TouchableOpacity>
+          style={{ paddingVertical: 20 }}
+          buttonStyle={{ width: "70%", alignSelf: "center" }}
+        />
 
         <Text style={styles.orText}>Or</Text>
 

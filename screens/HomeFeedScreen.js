@@ -43,7 +43,6 @@ const HomeFeedScreen = () => {
       />
       <ListItem.Content>
         <ListItem.Title style={{ color: "blue" }}>{item.title}</ListItem.Title>
-        <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
         <Text style={{ color: "red" }}>{item.author}</Text>
         <Text style={{ color: "red" }}>{item.source.name}</Text>
         <Text>{item.publishedAt}</Text>
