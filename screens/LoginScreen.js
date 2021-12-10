@@ -55,7 +55,7 @@
 
 // const styles = StyleSheet.create({});
 
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -72,11 +72,39 @@ import {
   Poppins_600Semi_Bold,
 } from "@expo-google-fonts/poppins";
 import { useNavigation } from "@react-navigation/native";
-
+import axios from "axios";
+import baseURL from "../assets/common/baseURL";
 const width_proportion = "80%";
 
 const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isVisible, setVisible] = useState(false);
   const navigation = useNavigation();
+
+  const signIn = () => {
+    let user = {
+      email: email,
+      password: password,
+    };
+
+    axios
+      .get(`${baseURL}users/?${user.email}`)
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (email == "" || password == "") {
+      console.log("error login");
+    } else {
+      // loginUser(user);
+      navigation.navigate("Main");
+    }
+  };
   return (
     <View style={styles.screenContainer}>
       <Image
@@ -85,9 +113,19 @@ const LoginScreen = () => {
       ></Image>
       <View style={styles.formContainer}>
         <Text style={styles.formTextLogin}>Login</Text>
-        <TextInput style={styles.formInput} placeholder="Email" />
+        <TextInput
+          style={styles.formInput}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
 
-        <TextInput style={styles.formInput} placeholder="Password" />
+        <TextInput
+          style={styles.formInput}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -99,7 +137,7 @@ const LoginScreen = () => {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Main");
+            signIn();
           }}
         >
           <Text style={styles.loginButton}>Login</Text>

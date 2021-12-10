@@ -16,6 +16,7 @@ import NewsDetailsScreen from "./screens/NewsDetailScreen";
 import OnBoardingScreen from "./screens/OnBoardingScreen";
 import NewsFeedScreen from "./screens/NewsFeedScreen";
 import PreferenceScreen from "./screens/PreferenceScreen";
+import { Icon } from "react-native-elements";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,22 +72,39 @@ function MainTabs() {
       <Tab.Screen
         name="Home"
         component={NewsStack}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: (props) => <Icon name="home" />,
+          tabBarActiveTintColor: "red",
+        }}
       />
       <Tab.Screen
         name="CategoryStack"
         component={CategoryNewsStack}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Category",
+          tabBarIcon: (props) => <Icon name="category" brand="materialicons" />,
+          tabBarActiveTintColor: "red",
+        }}
       />
       <Tab.Screen
         name="SavedArticles"
         component={SavedArticlesScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: (props) => <Icon name="article" brand="materialicons" />,
+          tabBarActiveTintColor: "red",
+        }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: (props) => <Icon name="person" brand="materialicons" />,
+          tabBarActiveTintColor: "red",
+        }}
       />
     </Tab.Navigator>
   );
