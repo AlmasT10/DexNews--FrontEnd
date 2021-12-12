@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,9 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Linking,
   Pressable,
+  Button,
 } from "react-native";
 import { Dimensions } from "react-native";
 import {
@@ -23,6 +25,8 @@ import {
   SelectMultipleButton,
   SelectMultipleGroupButton,
 } from "react-native-selectmultiple-button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import store from "react-native-simple-store";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -30,6 +34,11 @@ import LottieView from "lottie-react-native";
 import Heart from "react-animated-heart";
 const width_proportion = "80%";
 import Comment from "../components/Comment";
+import * as Speech from "expo-speech";
+import { Icon } from "react-native-elements";
+import axios from "axios";
+import baseURL from "../assets/common/baseURL";
+import { currentUser } from "./LoginScreen";
 
 const likeButton = () => {
   const [liked, setLiked] = useState(false);
@@ -45,7 +54,37 @@ const likeButton = () => {
   );
 };
 
-const NewsDetailsScreen = () => {
+const NewsDetailsScreen = ({ route }) => {
+  const news = route.params.detail;
+
+  const speak = () => {
+    Speech.speak(news.title);
+    Speech.speak(news.content);
+  };
+
+  const save = () => {
+    const data = {
+      news: news,
+      user: currentUser,
+    };
+
+    const dataArray = [];
+    dataArray.push(news);
+    try {
+      AsyncStorage.setItem(currentUser.id, JSON.stringify(dataArray));
+    } catch (err) {
+      console.log(err);
+    }
+
+    axios
+      .post(`${baseURL}saved`, data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   // const animation = React.useRef(null);
 
   // isLiked = false;
@@ -58,22 +97,39 @@ const NewsDetailsScreen = () => {
   //   }
   // }, [isLiked]);
 
+  const OpenURLButton = ({ url, children }) => {
+    const handlePress = useCallback(async () => {
+      // Checking if the link is supported for links with custom URL scheme.
+      const supported = await Linking.canOpenURL(url);
+
+      if (supported) {
+        // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+        // by some browser in the mobile
+        await Linking.openURL(url);
+      } else {
+        Alert.alert(`Don't know how to open this URL: ${url}`);
+      }
+    }, [url]);
+
+    return <Button title={children} onPress={handlePress} />;
+  };
+
   const [isClick, setClick] = useState(false);
   return (
-    <View style={styles.screenContainer}>
+    <ScrollView style={styles.screenContainer}>
       <ImageBackground
         style={{ width: "100%", height: 300 }}
-        source={require("../assets/news-Image.png")}
+        source={news.urlToImage && { uri: news.urlToImage }}
       >
-        <Text style={styles.newsLabel}>Games</Text>
-        <Text style={styles.newsTitle}>
-          Apex Legends Tier List Ranks Characters Based on 'Common Ways' They
-          Die
-        </Text>
+        {/* <Text style={styles.newsLabel}>Games</Text> */}
       </ImageBackground>
       <View style={styles.newsTextContainer}>
         <View style={styles.buttonsContainer}>
-          <FontAwesome.Button name="play" style={styles.listenBtn}>
+          <FontAwesome.Button
+            name="play"
+            style={styles.listenBtn}
+            onPress={speak}
+          >
             <Text>Listen</Text>
           </FontAwesome.Button>
           <LottieView
@@ -92,54 +148,24 @@ const NewsDetailsScreen = () => {
             name="share-alt"
             style={styles.shareBtn}
           ></FontAwesome.Button>
+          <FontAwesome.Button
+            name="save"
+            onPress={save}
+            style={styles.shareBtn}
+          ></FontAwesome.Button>
         </View>
 
         <SafeAreaView style={styles.newsTextContainerSafe}>
           <ScrollView style={styles.newsScrollBar}>
-            <Text style={styles.newsText}>
-              Apex Legends is a game that’s constantly changing. This year alone
-              has seen new maps, new legends, new items like Heat Shields, new
-              weapons, and more. However, one thing that is constant—or so it
-              seems—is how often certain characters play. It’s all a bit of fun,
-              but there are always jokes about TTV Wraiths who break off from
-              the squad, get killed immediately, and break off from the squad.
-              {"\n"} {"\n"}
-              Of course, that’s not how everyone plays Wraith in Apex Legends,
-              but it’s a funny, in-community joke. Now, TheKingofHats007 has
-              posted a “tier list” that ranks characters based on the common
-              ways they see them die. He had posted this before, but this season
-              11 edition captures some hilarious aspects of the current meta.
-              {"\n"} {"\n"}
-              The “run-in, 1v3’d, knocked and leaves” tier belongs to Wraith and
-              Octane, fitting that sort of rush in and die aspect fans have
-              likely seen from randoms online. Again, it’s not always true in
-              Apex Legends, but it’s quite hilarious nonetheless. The second
-              tier is described as “betrayed by their tactical,” and it includes
-              Pathfinder, Bangalore, and Valkyrie. Indeed, there’s been many a
-              time where Bangalore has used her smoke to her dismay, against
-              opponents who can counter it, while flying deliver bombs as
-              Valkyrie leaves her open for a good R-301 beam.{"\n"} {"\n"}
-              “Betrayed by their Ultimate” belongs to Ash and Bloodhound, with
-              the former zooming themselves into bad situations and Bloodhound’s
-              ultimate, however helpful, being heard from a mile away. Apex
-              Legends characters who die because they are “too confident in both
-              [tactical and ultimate] include Mirage, Revenant, Fuse, Seer, and
-              Horizon.{"\n"} {"\n"}
-              “Caught in the wide, wide open fields” tier is occupied mostly by
-              characters who should never be in an open-field scenario: Caustic,
-              Wattson, Rampart, and Loba. For the three defensive legends, open
-              fields basically wreck their abilities, while one could argue that
-              Loba also gets betrayed by her tactical. Once she re-appears,
-              smart players can lock on and take her out. “Abandoned by their
-              team + dies alone” goes to Crypto and Lifeline, as the latter may
-              not be playing the best Lifeline, and Crypto’s ability often
-              separates him from the squad.{"\n"} {"\n"}
-            </Text>
+            <Text style={styles.newsTitle}>{news.title}</Text>
+            <Text style={styles.newsText}>{news.content}</Text>
+            <Text>For More Information: </Text>
+            <OpenURLButton url={news.url}>{news.url}</OpenURLButton>
             <Comment />
           </ScrollView>
         </SafeAreaView>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -175,10 +201,7 @@ const styles = StyleSheet.create({
   newsTitle: {
     fontSize: 22,
     fontWeight: "bold",
-    marginLeft: 20,
     marginTop: 10,
-    color: "#FFFFFF",
-    lineHeight: 30,
   },
 
   newsTextContainer: {
@@ -251,19 +274,16 @@ const styles = StyleSheet.create({
 
   listenBtn: {
     backgroundColor: "#307AFF",
-    // width: "20%",
-    marginLeft: 20,
-    paddingLeft: 5,
-    paddingRight: 5,
     color: "#FFFFFF",
-    alignSelf: "flex-start",
     marginLeft: 20,
     marginTop: 20,
   },
 
   buttonsContainer: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
+    marginHorizontal: 5,
+    justifyContent: "space-evenly",
   },
 });
 
