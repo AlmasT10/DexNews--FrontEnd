@@ -5,6 +5,7 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -54,7 +55,7 @@ const NewsFeedScreen = ({ route }) => {
     <ListItem
       bottomDivider
       onPress={() => {
-        navigation.navigate("NewsDetails");
+        navigation.navigate("NewsDetails", { detail: item });
       }}
       containerStyle={{ marginVertical: 5, borderRadius: 10 }}
     >
@@ -74,7 +75,7 @@ const NewsFeedScreen = ({ route }) => {
     </ListItem>
   );
   return (
-    <SafeAreaView>
+    <ScrollView>
       <View style={styles.container}>
         <View
           style={{
@@ -103,7 +104,7 @@ const NewsFeedScreen = ({ route }) => {
           renderItem={renderItem}
         />
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

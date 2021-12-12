@@ -75,6 +75,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import baseURL from "../assets/common/baseURL";
 const width_proportion = "80%";
+export var currentUser;
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -89,10 +90,10 @@ const LoginScreen = () => {
     };
 
     axios
-      .get(`${baseURL}users/?${user.email}`)
+      .post(`${baseURL}users/login`, user)
       .then((res) => {
         const data = res.data;
-        console.log(data);
+        currentUser = data;
       })
       .catch((err) => {
         console.log(err);
@@ -125,6 +126,7 @@ const LoginScreen = () => {
           placeholder="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
         />
 
         <TouchableOpacity

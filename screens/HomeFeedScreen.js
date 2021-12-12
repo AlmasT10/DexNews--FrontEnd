@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { Image, SearchBar, ListItem, Avatar } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 
 const HomeFeedScreen = () => {
   const navigation = useNavigation();
@@ -21,7 +22,6 @@ const HomeFeedScreen = () => {
         "https://newsapi.org/v2/top-headlines?country=us&apiKey=be209dfe2f554400a9e6e3e214fdc366"
       );
       setArticles(res.data.articles);
-      console.log(res);
     };
     getArticles();
   }, []);
@@ -32,7 +32,7 @@ const HomeFeedScreen = () => {
     <ListItem
       bottomDivider
       onPress={() => {
-        navigation.navigate("NewsDetails");
+        navigation.navigate("NewsDetails", { detail: item });
       }}
       containerStyle={{ marginVertical: 5, borderRadius: 10 }}
     >
@@ -51,7 +51,7 @@ const HomeFeedScreen = () => {
     </ListItem>
   );
   return (
-    <SafeAreaView>
+    <ScrollView>
       <View style={styles.container}>
         <View
           style={{
@@ -77,7 +77,7 @@ const HomeFeedScreen = () => {
           renderItem={renderItem}
         />
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
