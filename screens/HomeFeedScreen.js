@@ -20,7 +20,7 @@ const HomeFeedScreen = () => {
   useEffect(() => {
     const getArticles = async () => {
       const res = await axios.get(
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=be209dfe2f554400a9e6e3e214fdc366"
+        "https://newsapi.org/v2/top-headlines?country=us&apiKey=e16066e676bd40fd9853b4c46f2b9059"
       );
       setArticles(res.data.articles);
     };
@@ -32,7 +32,7 @@ const HomeFeedScreen = () => {
 
     axios
       .get(
-        `https://newsapi.org/v2/everything?q=${search}&language=en&lan&apiKey=be209dfe2f554400a9e6e3e214fdc366`
+        `https://newsapi.org/v2/everything?q=${search}&language=en&lan&apiKey=e16066e676bd40fd9853b4c46f2b9059`
       )
       .then((res) => {
         setArticles(res.data.articles);
