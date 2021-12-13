@@ -75,7 +75,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import baseURL from "../assets/common/baseURL";
 const width_proportion = "80%";
-export var currentUser;
+export var currentUser = {};
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");

@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-elements";
 import axios from "axios";
 import baseURL from "../assets/common/baseURL";
+import { currentUser } from "./LoginScreen";
 
 const width_proportion = "80%";
 

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Dimensions,
   FlatList,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  RefreshControl,
 } from "react-native";
 import {
   Image,
@@ -22,9 +23,14 @@ import baseURL from "../assets/common/baseURL";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { currentUser } from "./LoginScreen";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const SavedArticlesScreen = () => {
   const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   // try {
   //   AsyncStorage.getItem(currentUser.id).then((res) => {
@@ -36,11 +42,24 @@ const SavedArticlesScreen = () => {
   //   console.log(err);
   // }
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    axios
+      .get(`${baseURL}saved/${currentUser.id}`)
+      .then((res) => {
+        setArticles(res.dat);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   useEffect(() => {
     const getArticles = async () => {
       const res = await axios.get(`${baseURL}saved/${currentUser.id}`);
       // setArticles(res.data.articles);
-      console.log(res.data.news);
+      console.log(res.data);
       setArticles(res.data);
     };
     getArticles();
@@ -107,6 +126,9 @@ const SavedArticlesScreen = () => {
             keyExtractor={keyExtractor}
             data={articles}
             renderItem={renderItem}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           />
         </View>
       </ScrollView>
