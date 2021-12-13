@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import {
@@ -15,34 +14,37 @@ import {
   SearchBar,
   ListItem,
   Avatar,
+  Text,
   Icon,
 } from "react-native-elements";
 import baseURL from "../assets/common/baseURL";
-import { currentUser } from "./LoginScreen";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { currentUser } from "./LoginScreen";
 
 const SavedArticlesScreen = () => {
   const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
 
-  try {
-    AsyncStorage.getItem(currentUser.id).then((res) => {
-      let jsonObject = JSON.parse(result);
-      console.log(jsonObject);
-      setArticles(jsonObject);
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  // try {
+  //   AsyncStorage.getItem(currentUser.id).then((res) => {
+  //     let jsonObject = JSON.parse(result);
+  //     console.log(jsonObject);
+  //     setArticles(jsonObject);
+  //   });
+  // } catch (err) {
+  //   console.log(err);
+  // }
 
-  // useEffect(() => {
-  //   const getArticles = async () => {
-  //     const res = await axios.get(`${baseURL}saved/${currentUser}`);
-  //     setArticles(res.data.articles);
-  //     console.log(res);
-  //   };
-  //   getArticles();
-  // }, []);
+  useEffect(() => {
+    const getArticles = async () => {
+      const res = await axios.get(`${baseURL}saved/${currentUser.id}`);
+      // setArticles(res.data.articles);
+      console.log(res.data.news);
+      setArticles(res.data);
+    };
+    getArticles();
+  }, []);
 
   //   useEffect(() => {
   //     axios
@@ -66,56 +68,49 @@ const SavedArticlesScreen = () => {
     <ListItem
       bottomDivider
       onPress={() => {
-        navigation.navigate("NewsDetails", { detail: item });
+        navigation.navigate("NewsDetails", { detail: item.news });
       }}
       containerStyle={{ marginVertical: 5, borderRadius: 10 }}
     >
       <Avatar
-        source={item.urlToImage && { uri: item.urlToImage }}
+        source={item.news.urlToImage && { uri: item.news.urlToImage }}
         size="xlarge"
         avatarStyle={{ resizeMode: "stretch" }}
       />
       <ListItem.Content>
-        <ListItem.Title style={{ color: "blue" }}>{item.title}</ListItem.Title>
+        <ListItem.Title style={{ color: "blue" }}>
+          {item.news.title}
+        </ListItem.Title>
         <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-        <Text style={{ color: "red" }}>{item.author}</Text>
-        <Text style={{ color: "red" }}>{item.source.name}</Text>
-        <Text>{item.publishedAt}</Text>
+        <Text style={{ color: "red" }}>{item.news.author}</Text>
+        <Text style={{ color: "red" }}>{item.news.source.name}</Text>
+        <Text>{item.news.publishedAt}</Text>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem>
   );
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 10,
-            justifyContent: "space-evenly",
-          }}
-        >
-          <Icon
-            name="arrow-back"
-            brand="ionicons"
-            onPress={() => {
-              navigation.navigate("Category");
+    <View style={{ paddingTop: 30 }}>
+      <ScrollView>
+        <View style={styles.container}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "flex-start",
+              paddingVertical: 10,
+              justifyContent: "space-evenly",
             }}
-          />
-          <SearchBar
-            round
-            containerStyle={styles.searchCon}
-            inputContainerStyle={styles.search}
+          >
+            <Text h3>Saved Articles</Text>
+          </View>
+          <FlatList
+            keyExtractor={keyExtractor}
+            data={articles}
+            renderItem={renderItem}
           />
         </View>
-        <FlatList
-          keyExtractor={keyExtractor}
-          data={articles}
-          renderItem={renderItem}
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

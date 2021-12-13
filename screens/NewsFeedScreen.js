@@ -23,6 +23,7 @@ const NewsFeedScreen = ({ route }) => {
   const category = route.params.title;
   const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
+  const [search, updateSearch] = useState("");
 
   useEffect(() => {
     const getArticles = async () => {
@@ -32,6 +33,21 @@ const NewsFeedScreen = ({ route }) => {
     };
     getArticles();
   }, []);
+
+  const searchNews = (text) => {
+    updateSearch(text);
+
+    axios
+      .get(
+        `https://newsapi.org/v2/top-headlines?q=${search}&category=${category}&apiKey=be209dfe2f554400a9e6e3e214fdc366`
+      )
+      .then((res) => {
+        setArticles(res.data.articles);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   //   useEffect(() => {
   //     axios
@@ -96,6 +112,9 @@ const NewsFeedScreen = ({ route }) => {
             round
             containerStyle={styles.searchCon}
             inputContainerStyle={styles.search}
+            placeholder="Type Here..."
+            onChangeText={(text) => searchNews(text)}
+            value={search}
           />
         </View>
         <FlatList

@@ -79,6 +79,7 @@ const RegisterScreen = () => {
           placeholder="Password"
           value={password}
           secureTextEntry={true}
+          onChangeText={(text) => setPassword(text)}
         />
 
         {/* <TouchableOpacity>

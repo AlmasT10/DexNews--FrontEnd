@@ -122,6 +122,15 @@ const NewsDetailsScreen = ({ route }) => {
         source={news.urlToImage && { uri: news.urlToImage }}
       >
         {/* <Text style={styles.newsLabel}>Games</Text> */}
+        <Icon
+          name="arrow-back"
+          brand="ionicons"
+          color="black"
+          style={{ position: "relative" }}
+          onPress={() => {
+            navigation.navigate("Category");
+          }}
+        />
       </ImageBackground>
       <View style={styles.newsTextContainer}>
         <View style={styles.buttonsContainer}>
@@ -140,10 +149,10 @@ const NewsDetailsScreen = ({ route }) => {
             // loop={false}
             autoPlay
           />
-          <FontAwesome.Button
+          {/* <FontAwesome.Button
             name="bookmark"
             style={styles.bookmarkBtn}
-          ></FontAwesome.Button>
+          ></FontAwesome.Button> */}
           <FontAwesome.Button
             name="share-alt"
             style={styles.shareBtn}
@@ -161,7 +170,7 @@ const NewsDetailsScreen = ({ route }) => {
             <Text style={styles.newsText}>{news.content}</Text>
             <Text>For More Information: </Text>
             <OpenURLButton url={news.url}>{news.url}</OpenURLButton>
-            <Comment />
+            <Comment postId={news.title} />
           </ScrollView>
         </SafeAreaView>
       </View>

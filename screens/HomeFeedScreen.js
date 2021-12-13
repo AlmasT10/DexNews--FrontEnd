@@ -15,6 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 const HomeFeedScreen = () => {
   const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
+  const [search, updateSearch] = useState("");
 
   useEffect(() => {
     const getArticles = async () => {
@@ -25,6 +26,21 @@ const HomeFeedScreen = () => {
     };
     getArticles();
   }, []);
+
+  const searchNews = (text) => {
+    updateSearch(text);
+
+    axios
+      .get(
+        `https://newsapi.org/v2/everything?q=${search}&language=en&lan&apiKey=be209dfe2f554400a9e6e3e214fdc366`
+      )
+      .then((res) => {
+        setArticles(res.data.articles);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   keyExtractor = (item, index) => index.toString();
 
@@ -69,6 +85,9 @@ const HomeFeedScreen = () => {
             round
             containerStyle={styles.searchCon}
             inputContainerStyle={styles.search}
+            placeholder="Type Here..."
+            onChangeText={(text) => searchNews(text)}
+            value={search}
           />
         </View>
         <FlatList
